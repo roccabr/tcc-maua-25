@@ -1,393 +1,177 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jogo de Gestão de Estoque – CVS Cestas de Alimentos</title>
-  <style>
-    :root{
-      --bg:#0b0b0f;      --panel:#15161c;    --panel-2:#1b1d26;  --text:#f5f7fb;
-      --muted:#b8bfcc;   --brand:#c21f2e;    --ok:#27ae60;      --warn:#f39c12; --bad:#e74c3c;
-      --stroke:#2a2e39;  --accent:#f0c567;  --shadow:0 10px 30px rgba(0,0,0,.45);
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{margin:0;font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; color:var(--text); background:linear-gradient(120deg,#0a0a0d,#12131a 40%, #0a0a0d 90%);} 
-    .wrap{max-width:1200px;margin:0 auto;padding:24px}
-    header{display:flex;align-items:center;gap:18px;margin-bottom:18px}
-    header .kv{width:68px;height:68px;border-radius:14px;background:var(--panel);display:grid;place-items:center;box-shadow:var(--shadow)}
-    header .kv img{max-width:56px;max-height:56px;display:block}
-    header h1{font-size:clamp(20px,2.4vw,28px);margin:0;line-height:1.15;font-weight:800}
-    header p{margin:2px 0 0;color:var(--muted)}
-
-    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px}
-    @media (max-width:980px){.grid{grid-template-columns:1fr}}
-
-    .card{background:linear-gradient(180deg,var(--panel),var(--panel-2)); border:1px solid var(--stroke); border-radius:16px; padding:18px; box-shadow:var(--shadow)}
-    .card h2{margin:0 0 10px;font-size:18px}
-    .hint{color:var(--muted);font-size:13px}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-
-    .cfg{display:grid;grid-template-columns:repeat(4, minmax(160px,1fr)); gap:10px;margin-top:8px}
-    .cfg label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
-    .cfg input, .cfg select{padding:10px 12px;border-radius:12px;border:1px solid var(--stroke);background:#0f1118;color:var(--text)}
-
-    .btn{appearance:none;border:none;border-radius:14px;background:var(--brand);color:#fff;padding:12px 16px;font-weight:700;cursor:pointer;box-shadow:var(--shadow);transition:transform .06s ease}
-    .btn:hover{transform:translateY(-1px)}
-    .btn.secondary{background:transparent;border:1px solid var(--stroke);color:var(--text)}
-    .btn.ghost{background:transparent;color:var(--muted)}
-
-    table{width:100%;border-collapse:separate;border-spacing:0 8px}
-    thead th{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);text-align:left;padding:0 10px}
-    tbody td{background:#0f1118;border:1px solid var(--stroke);padding:10px;border-left:none;border-right:none}
-    tbody tr{border-radius:12px;overflow:hidden}
-    tbody td:first-child{border-left:1px solid var(--stroke);border-radius:12px 0 0 12px}
-    tbody td:last-child{border-right:1px solid var(--stroke);border-radius:0 12px 12px 0}
-    .num{font-variant-numeric:tabular-nums}
-    .in-num{width:100%;padding:8px 10px;border-radius:10px;border:1px solid var(--stroke);background:#0b0d13;color:var(--text);text-align:right}
-
-    .kpis{display:grid;grid-template-columns:repeat(4,minmax(160px,1fr));gap:12px}
-    .pill{padding:14px;border-radius:14px;background:#0f1118;border:1px solid var(--stroke)}
-    .pill h3{margin:0 0 6px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
-    .pill .v{font-size:20px;font-weight:800}
-
-    .score{display:flex;align-items:center;gap:10px}
-    .score .bar{flex:1;height:10px;background:#0b0d13;border:1px solid var(--stroke);border-radius:999px;position:relative}
-    .score .bar > i{position:absolute;inset:0 0 0 0;background:linear-gradient(90deg,var(--ok),#9acd32,#f1c40f,#e67e22,#e74c3c); border-radius:999px; mask:linear-gradient(90deg, #000 var(--pct), transparent 0)}
-
-    details{border:1px dashed var(--stroke);border-radius:14px;padding:12px;margin-top:12px}
-    details summary{cursor:pointer;color:var(--muted)}
-
-    footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jogo do Estoque — CVS Cestas</title>
+<style>
+  body {
+    font-family: 'Comic Sans MS', sans-serif;
+    background: #f7f8fa;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 { color: #c21f2e; }
+  .box {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  button {
+    font-size: 18px;
+    padding: 14px 22px;
+    border: none;
+    border-radius: 12px;
+    background: #c21f2e;
+    color: white;
+    cursor: pointer;
+    margin: 10px;
+  }
+  button:hover { background: #a31826; }
+  input[type=range] {
+    width: 80%;
+  }
+  .produto {
+    margin: 25px 0;
+    background: #f1f1f1;
+    border-radius: 12px;
+    padding: 10px;
+  }
+  .resultado {
+    font-size: 20px;
+    margin-top: 15px;
+    font-weight: bold;
+  }
+  .verde { color: #27ae60; }
+  .amarelo { color: #f39c12; }
+  .vermelho { color: #e74c3c; }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="kv"><img alt="Logo CVS Cestas" id="logo" src="https://cvssocial.com.br/wp-content/uploads/2021/06/cropped-Logo-CVS-512x512-1.png"/></div>
-      <div>
-        <h1>Jogo de Gestão de Estoque — <span style="color:var(--accent)">CVS Cestas de Alimentos</span></h1>
-        <p>Planeje compras por semana, atenda a demanda e evite capital parado. No fim, veja sua pontuação e economia.</p>
-      </div>
-    </header>
 
-    <div class="grid">
-      <!-- ESQUERDA: Configuração + Planejamento -->
-      <section class="card" id="config">
-        <h2>Configuração do Cenário</h2>
-        <div class="cfg">
-          <label>Semanas
-            <select id="weeks">
-              <option>4</option>
-              <option selected>6</option>
-              <option>8</option>
-            </select>
-          </label>
-          <label>Taxa de Manutenção/semana (custo de segurar estoque)
-            <input id="holdingRate" type="number" min="0" step="0.005" value="0.02"/>
-          </label>
-          <label>Penalidade por Falta (por unidade)
-            <input id="stockoutPenalty" type="number" min="0" step="0.5" value="6"/>
-          </label>
-          <label>Seed (cenário)
-            <input id="seed" type="number" step="1" value="0"/>
-          </label>
-        </div>
-        <div class="row" style="margin-top:12px">
-          <button class="btn" id="btnScenario">Gerar Pedidos das Próximas Semanas</button>
-          <button class="btn secondary" id="btnReset">Limpar Planejamento</button>
-        </div>
-        <p class="hint">Dica: clique em "Gerar Pedidos" para criar um cenário aleatório (você verá a demanda prevista de cada semana). Preencha <em>Estoque Inicial</em> e os <em>Recebimentos</em> planejados.</p>
+<h1>Jogo do Estoque 🏭</h1>
+<p>Planeje suas compras e maximize o lucro!</p>
 
-        <div id="productsArea" style="margin-top:16px"></div>
+<div class="box" id="fase1">
+  <h2>1️⃣ Compre seu estoque! :)</h2>
+  <div id="produtos"></div>
+  <button id="btnAvancar">Confirmar Compras ✅</button>
+</div>
 
-        <details>
-          <summary>Parâmetros dos produtos (opcional)</summary>
-          <div class="cfg" id="productsCfg"></div>
-        </details>
-
-        <div class="row" style="margin-top:14px">
-          <button class="btn" id="btnRun">Enviar & Ver Resultado</button>
-          <button class="btn ghost" id="btnNew">Novo Cenário</button>
-        </div>
-      </section>
-
-      <!-- DIREITA: Resultado -->
-      <aside class="card">
-        <h2>Resultado</h2>
-        <div class="kpis" id="kpis">
-          <div class="pill"><h3>Atendimento da Demanda</h3><div class="v num" id="svc">—</div></div>
-          <div class="pill"><h3>Lucro Estimado</h3><div class="v num" id="profit">—</div></div>
-          <div class="pill"><h3>Custo de Manutenção</h3><div class="v num" id="hold">—</div></div>
-          <div class="pill"><h3>Custo de Falta</h3><div class="v num" id="out">—</div></div>
-        </div>
-
-        <div class="pill" style="margin-top:12px">
-          <h3>Nota</h3>
-          <div class="score">
-            <div class="bar"><i id="bar" style="--pct:0%"></i></div>
-            <div class="v num" id="score" style="min-width:72px;text-align:right">—</div>
-          </div>
-          <p class="hint" id="summary" style="margin:8px 0 0">Faça um cenário e clique em "Enviar" para ver sua pontuação.</p>
-        </div>
-
-        <details style="margin-top:12px">
-          <summary>Comparativos</summary>
-          <div class="kpis" style="margin-top:10px">
-            <div class="pill"><h3>Economia vs Estoque Excessivo</h3><div class="v num" id="vsOver">—</div></div>
-            <div class="pill"><h3>Gap para o "Perfeito"</h3><div class="v num" id="vsPerfect">—</div></div>
-            <div class="pill"><h3>Capital Parado no Final</h3><div class="v num" id="endingCap">—</div></div>
-            <div class="pill"><h3>Receitas</h3><div class="v num" id="revenue">—</div></div>
-          </div>
-          <p class="hint" style="margin-top:8px">* "Excessivo": compra 120% da demanda semanal. * "Perfeito": atende 100% sem sobra (referência teórica para mostrar oportunidade).</p>
-        </details>
-      </aside>
-    </div>
-
-    <footer>Feito para a Eureka • Demonstração didática — gestão de estoque (sobras x faltas)</footer>
-  </div>
+<div class="box" id="fase2" style="display:none;">
+  <h2>2️⃣ Resultado</h2>
+  <div id="resultados"></div>
+  <p class="resultado" id="lucroFinal"></p>
+  <p class="resultado" id="lucroMaximo"></p>
+  <p class="resultado" id="percentual"></p>
+  <button onclick="window.location.reload()">Jogar de Novo 🔁</button>
+</div>
 
 <script>
-(function(){
-  // ====== Util ======
-  const BRL = new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
-  const pct = v => `${(v*100).toFixed(0)}%`;
-  const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
-  const rand = (seed)=>{ // mulberry32
-    let t = seed>>>0; return ()=>{t += 0x6D2B79F5; let r = Math.imul(t ^ t>>>15, 1 | t); r ^= r + Math.imul(r ^ r>>>7, 61 | r); return ((r ^ r>>>14) >>> 0) / 4294967296;};
-  };
+const produtos = [
+  { nome: "Produto A", custo: 10, preco: 20 },
+  { nome: "Produto B", custo: 15, preco: 30 },
+  { nome: "Produto C", custo: 8,  preco: 14 }
+];
 
-  // ====== Estado ======
-  let weeks = 6;
-  let holdingRate = 0.02;
-  let stockoutPenalty = 6; // por unidade
-  let rng = rand(1);
+const produtosDiv = document.getElementById("produtos");
+const resultadosDiv = document.getElementById("resultados");
+const lucroFinal = document.getElementById("lucroFinal");
+const lucroMaximo = document.getElementById("lucroMaximo");
+const percentual = document.getElementById("percentual");
+const btnAvancar = document.getElementById("btnAvancar");
 
-  const products = [
-    {id:'A', nome:'Produto A', custo:10, preco:20, demandaBase: 60},
-    {id:'B', nome:'Produto B', custo:12, preco:22, demandaBase: 35},
-    {id:'C', nome:'Produto C', custo:7,  preco:14, demandaBase: 80},
-  ];
+let estimada = {};
+let real = {};
+let compras = {};
 
-  const state = {
-    demand: {},      // {A:[..], B:[..]}
-    plan: {},        // {A:{init:0, receipts:[...]},...}
-  };
+// gera demandas estimadas e reais
+produtos.forEach(p => {
+  const base = Math.floor(Math.random() * 80) + 40; // 40 a 120
+  estimada[p.nome] = base;
+  real[p.nome] = Math.round(base * (0.8 + Math.random() * 0.4)); // ±20%
+});
 
-  // ====== DOM refs ======
-  const $ = sel => document.querySelector(sel);
-  const productsArea = $('#productsArea');
-  const productsCfg = $('#productsCfg');
+// mostra os produtos
+produtosDiv.innerHTML = produtos.map((p,i)=>`
+  <div class="produto">
+    <h3>${p.nome}</h3>
+    <p>💰 Custo: R$${p.custo} | 💵 Preço: R$${p.preco}</p>
+    <p>📦 Demanda estimada: <b>${estimada[p.nome]} unidades</b></p>
+    <input type="range" min="0" max="${estimada[p.nome]*2}" value="${estimada[p.nome]}" id="range${i}">
+    <p>Você vai comprar: <b><span id="val${i}">${estimada[p.nome]}</span></b> unidades</p>
+  </div>
+`).join('');
 
-  // ====== Logo (data URL) ======
-  const LOGO_DATA = "data:image/png;base64,REPLACE_LOGO_BASE64"; // substituído no build
-  const logoEl = document.getElementById('logo');
-  logoEl.src = LOGO_DATA;
+produtos.forEach((p,i)=>{
+  const range = document.getElementById("range"+i);
+  const val = document.getElementById("val"+i);
+  range.addEventListener("input", ()=>{
+    val.textContent = range.value;
+  });
+});
 
-  // ====== Inicialização ======
-  function init(){
-    renderProductCfg();
-    scenarioFromSeed();
-    bind();
-  }
+btnAvancar.addEventListener("click", ()=>{
+  produtos.forEach((p,i)=>{
+    compras[p.nome] = Number(document.getElementById("range"+i).value);
+  });
+  mostrarResultado();
+});
 
-  function bind(){
-    $('#btnScenario').addEventListener('click', scenarioFromSeed);
-    $('#btnNew').addEventListener('click', ()=>{ $('#seed').value = (Date.now()%100000)|0; scenarioFromSeed(); });
-    $('#btnReset').addEventListener('click', ()=>{ Object.keys(state.plan).forEach(k=>{ state.plan[k].init=0; state.plan[k].receipts.fill(0); }); renderPlanningTables(); });
-    $('#btnRun').addEventListener('click', run);
+function mostrarResultado(){
+  document.getElementById("fase1").style.display="none";
+  document.getElementById("fase2").style.display="block";
 
-    $('#weeks').addEventListener('change', e=>{ weeks = +e.target.value; scenarioFromSeed(); });
-    $('#holdingRate').addEventListener('input', e=> holdingRate = +e.target.value);
-    $('#stockoutPenalty').addEventListener('input', e=> stockoutPenalty = +e.target.value);
-  }
+  let lucroTotal = 0;
+  let lucroMax = 0;
 
-  function renderProductCfg(){
-    productsCfg.innerHTML = products.map((p,i)=>{
-      return `<label>${p.nome} — Custo (R$)
-        <input type="number" value="${p.custo}" min="0" step="0.5" data-k="custo" data-i="${i}"></label>
-        <label>${p.nome} — Preço (R$)
-        <input type="number" value="${p.preco}" min="0" step="0.5" data-k="preco" data-i="${i}"></label>
-        <label>${p.nome} — Demanda base/semana
-        <input type="number" value="${p.demandaBase}" min="0" step="1" data-k="demandaBase" data-i="${i}"></label>`
-    }).join('');
-    productsCfg.querySelectorAll('input').forEach(inp=>{
-      inp.addEventListener('input', e=>{
-        const i = +e.target.dataset.i;
-        const k = e.target.dataset.k;
-        products[i][k] = +e.target.value;
-        scenarioFromSeed();
-      });
-    })
-  }
+  resultadosDiv.innerHTML = produtos.map(p=>{
+    const comprado = compras[p.nome];
+    const demandaReal = real[p.nome];
+    const vendido = Math.min(comprado, demandaReal);
+    const sobra = Math.max(0, comprado - demandaReal);
+    const falta = Math.max(0, demandaReal - comprado);
+    const receita = vendido * p.preco;
+    const custo = comprado * p.custo;
+    const lucro = receita - custo;
+    lucroTotal += lucro;
 
-  function scenarioFromSeed(){
-    const seedVal = +($('#seed').value||0);
-    rng = rand(seedVal || 1);
-    // build demand with variação aleatória (±25%) e 1 pico
-    products.forEach(p=>{
-      const arr = Array.from({length:weeks},(_,w)=>{
-        const base = p.demandaBase;
-        const noise = (rng()*0.5 - 0.25); // -25%..+25%
-        return Math.max(0, Math.round(base * (1+noise)));
-      });
-      // cria um pico adicional em 1 semana
-      const peakW = (rng()*weeks)|0; arr[peakW] = Math.round(arr[peakW]*1.35);
-      state.demand[p.id] = arr;
-      state.plan[p.id] = { init: 0, receipts: Array(weeks).fill(0) };
-    });
-    renderPlanningTables();
-    resetResults();
-  }
+    // lucro máximo = atender 100% da demanda real (sem sobras)
+    const lucroIdeal = (demandaReal * (p.preco - p.custo));
+    lucroMax += lucroIdeal;
 
-  function renderPlanningTables(){
-    productsArea.innerHTML = products.map(p=>{
-      const dem = state.demand[p.id];
-      return `
-      <div class="card" style="margin-top:10px">
-        <h2 style="display:flex;align-items:center;gap:8px;margin-bottom:6px">${p.nome} <span class="hint">(custo ${BRL.format(p.custo)} • preço ${BRL.format(p.preco)})</span></h2>
-        <div class="row" style="margin:8px 0">
-          <label class="hint">Estoque Inicial</label>
-          <input class="in-num" type="number" min="0" step="1" value="${state.plan[p.id].init}" data-type="init" data-id="${p.id}" />
-          <button class="btn ghost" data-fill="${p.id}">Auto-preencher recebimentos (≈ demanda)</button>
-        </div>
-        <div style="overflow:auto">
-        <table>
-          <thead>
-            <tr>
-              <th>Semana</th>
-              ${dem.map((_,i)=>`<th>S${i+1}</th>`).join('')}
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td class="hint">Demanda</td>
-              ${dem.map(v=>`<td class="num">${v}</td>`).join('')}
-              <td class="num">${dem.reduce((a,b)=>a+b,0)}</td>
-            </tr>
-            <tr>
-              <td class="hint">Recebimentos (planeje)</td>
-              ${dem.map((_,i)=>{
-                const val = state.plan[p.id].receipts[i]||0;
-                return `<td><input class="in-num" type="number" min="0" step="1" value="${val}" data-type="rcv" data-id="${p.id}" data-week="${i}"></td>`;
-              }).join('')}
-              <td class="num" id="sum-${p.id}">0</td>
-            </tr>
-          </tbody>
-        </table>
-        </div>
-      </div>`;
-    }).join('');
+    let msg = "";
+    let cor = "";
+    if(falta>0) { msg = `Faltaram ${falta} unidades 😢`; cor = "vermelho"; }
+    else if(sobra>0) { msg = `Sobraram ${sobra} unidades 😅`; cor = "amarelo"; }
+    else { msg = `Perfeito! Atendeu tudo! 🎉`; cor = "verde"; }
 
-    // bind inputs
-    productsArea.querySelectorAll('input[data-type="init"]').forEach(inp=>{
-      inp.addEventListener('input', e=>{ const id = e.target.dataset.id; state.plan[id].init = +e.target.value; });
-    });
-    productsArea.querySelectorAll('input[data-type="rcv"]').forEach(inp=>{
-      inp.addEventListener('input', e=>{ const id = e.target.dataset.id; const w = +e.target.dataset.week; state.plan[id].receipts[w] = +e.target.value; updateSums(id); });
-    });
-    productsArea.querySelectorAll('button[data-fill]').forEach(btn=>{
-      btn.addEventListener('click', e=>{ const id = e.target.dataset.fill; const dem = state.demand[id]; state.plan[id].receipts = dem.map(v=>Math.max(0, Math.round(v*0.95))); updateSums(id); renderPlanningTables(); });
-    });
+    return `
+      <div class="produto">
+        <h3>${p.nome}</h3>
+        <p>🧮 Demanda real: ${demandaReal}</p>
+        <p class="${cor}">${msg}</p>
+        <p>💵 Lucro: <b>R$${lucro.toFixed(2)}</b></p>
+      </div>
+    `;
+  }).join('');
 
-    Object.keys(state.plan).forEach(id=>updateSums(id));
-  }
+  // mostrar resultados gerais
+  const percentualLucro = lucroMax > 0 ? (lucroTotal / lucroMax) * 100 : 0;
 
-  function updateSums(id){
-    const s = (state.plan[id].receipts||[]).reduce((a,b)=>a+(+b||0),0);
-    const el = document.getElementById(`sum-${id}`); if(el) el.textContent = s;
-  }
+  lucroFinal.textContent = `💰 Seu lucro total: R$${lucroTotal.toFixed(2)}`;
+  lucroMaximo.textContent = `⭐ Lucro máximo possível: R$${lucroMax.toFixed(2)}`;
+  percentual.textContent = `📊 Você atingiu ${percentualLucro.toFixed(1)}% do lucro máximo!`;
 
-  function resetResults(){
-    $('#svc').textContent = '—';
-    $('#profit').textContent = '—';
-    $('#hold').textContent = '—';
-    $('#out').textContent = '—';
-    $('#bar').style.setProperty('--pct','0%');
-    $('#score').textContent = '—';
-    $('#summary').textContent = 'Crie um cenário, planeje e clique em Enviar.';
-    $('#vsOver').textContent = '—';
-    $('#vsPerfect').textContent = '—';
-    $('#endingCap').textContent = '—';
-    $('#revenue').textContent = '—';
-  }
-
-  // ====== Simulação ======
-  function simulate(plan){
-    let totalDemand=0, totalFulfilled=0, totalHold=0, totalOutCost=0, revenue=0, purchase=0, endingCap=0;
-
-    products.forEach(p=>{
-      const dem = state.demand[p.id];
-      let inv = plan[p.id].init||0;
-      for(let w=0; w<weeks; w++){
-        const receive = plan[p.id].receipts[w]||0;
-        purchase += receive * p.custo;
-        inv += receive;
-        const d = dem[w];
-        totalDemand += d;
-        const sold = Math.min(inv, d);
-        totalFulfilled += sold;
-        inv -= sold;
-        revenue += sold * p.preco;
-        totalHold += inv * p.custo * holdingRate; // custo de manter estoque pelo valor de custo
-        const lost = d - sold;
-        totalOutCost += lost * stockoutPenalty; // penalidade por unidade não atendida
-      }
-      endingCap += inv * p.custo; // capital parado no fim
-    });
-
-    const profit = revenue - purchase - totalHold - totalOutCost;
-    const service = totalDemand>0 ? totalFulfilled/totalDemand : 1;
-    return {profit, service, totalHold, totalOutCost, endingCap, revenue, purchase};
-  }
-
-  function buildOverstockPlan(){
-    const plan = {}; products.forEach(p=>{ const dem=state.demand[p.id]; plan[p.id] = {init: 0, receipts: dem.map(v=>Math.round(v*1.2))}; });
-    return plan;
-  }
-  function buildPerfectPlan(){
-    const plan = {}; products.forEach(p=>{ const dem=state.demand[p.id]; plan[p.id] = {init: 0, receipts: dem.slice()}; });
-    return plan;
-  }
-
-  function run(){
-    // sanity: fill NaNs with 0
-    Object.values(state.plan).forEach(p=>{ p.init = +p.init||0; p.receipts = p.receipts.map(x=>+x||0); });
-
-    const rUser = simulate(state.plan);
-    const rOver = simulate(buildOverstockPlan());
-    const rPerf = simulate(buildPerfectPlan());
-
-    // nota: 70% peso serviço + 30% eficiência (pouco capital e custo)
-    const svcScore = rUser.service*100;
-    // eficiência aproximada: margem relativa ao perfeito, clamp 0..100
-    const eff = rPerf.profit!==0 ? clamp((rUser.profit / rPerf.profit)*100, 0, 130) : 100;
-    const score = clamp(0.7*svcScore + 0.3*Math.min(100,eff), 0, 100);
-
-    $('#svc').textContent = pct(rUser.service);
-    $('#profit').textContent = BRL.format(rUser.profit);
-    $('#hold').textContent = BRL.format(rUser.totalHold);
-    $('#out').textContent  = BRL.format(rUser.totalOutCost);
-    $('#endingCap').textContent = BRL.format(rUser.endingCap);
-    $('#revenue').textContent = BRL.format(rUser.revenue);
-
-    $('#bar').style.setProperty('--pct', `${100-score}%`);
-    $('#score').textContent = `${score.toFixed(0)} / 100`;
-
-    const deltaOver = rUser.profit - rOver.profit; // positivo = economizou vs excesso
-    const deltaPerfect = rPerf.profit - rUser.profit; // quanto deixou na mesa
-    $('#vsOver').textContent = (deltaOver>=0?'+ ':'- ') + BRL.format(Math.abs(deltaOver));
-    $('#vsOver').style.color = deltaOver>=0 ? 'var(--ok)' : 'var(--bad)';
-    $('#vsPerfect').textContent = '- ' + BRL.format(Math.max(0,deltaPerfect));
-
-    const txt = `Você atendeu ${pct(rUser.service)} da demanda. ${deltaOver>=0?`Economizou ${BRL.format(deltaOver)} vs cenário de estoque excessivo.`:`Perdeu ${BRL.format(-deltaOver)} vs cenário excessivo.`} Poderia melhorar em ${BRL.format(Math.max(0,deltaPerfect))} em relação ao cenário perfeito.`;
-    $('#summary').textContent = txt;
-  }
-
-  // kickstart
-  init();
-})();
+  if(lucroTotal > 0) lucroFinal.className="resultado verde";
+  else lucroFinal.className="resultado vermelho";
+}
 </script>
+
 </body>
 </html>
